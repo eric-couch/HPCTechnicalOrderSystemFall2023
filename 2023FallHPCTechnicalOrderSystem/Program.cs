@@ -43,7 +43,43 @@ do
         {
             Console.WriteLine(ThisOrderService.ListOrders(custOrders));
         }
-    } else if (userResponse.ToLower() == "q")
+    } else if (userResponse.ToLower() == "p") {
+        Console.Clear();
+        Order newOrder = new Order()
+        {
+            Customer = ThisCustomer,
+            OrderPlaced = DateTime.Now
+        };
+        OrderDetail od = new OrderDetail()
+        {
+            Order = newOrder 
+        };
+        bool doneWithProducts = false;
+        do
+        {
+            Console.WriteLine(ThisOrderService.OrderMenu());
+            string orderItem = Console.ReadLine() ?? "q";
+            if (orderItem.ToLower() == "q")
+            {
+                doneWithProducts = true;
+            } else if (Int32.TryParse(orderItem, out int productNumber))
+            {
+                Product product = ThisOrderService.GetProduct(productNumber);
+                if (product is not null)
+                {
+                    od.Product = product;
+                    od.Quantity = 1;
+                    ThisOrderService.SaveOrder(newOrder);
+                    ThisOrderService.SaveOrderDetail(od);
+                    doneWithProducts = true;
+                }
+            } else
+            {
+                Console.WriteLine("Invalid Input.");
+            }
+        } while (!doneWithProducts);
+    }
+    else if (userResponse.ToLower() == "q")
     {
         quitOrder = true;
     } else

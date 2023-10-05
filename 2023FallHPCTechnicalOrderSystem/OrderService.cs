@@ -67,6 +67,24 @@ public class OrderService
         return str;
     }   
 
+    public Product? GetProduct(int id)
+    {
+        Product product = ( from p in _context.Products
+                            where p.Id == id
+                            select p).FirstOrDefault()!;
+        return product;
+    }
+
+    public void SaveOrder(Order order)
+    {
+        _context.Orders.Add(order);
+        _context.SaveChanges();
+    }
+    public void SaveOrderDetail(OrderDetail orderDetail)
+    {
+        _context.OrderDetails.Add(orderDetail);
+        _context.SaveChanges();
+    }
     public static string MainMenu()
     {
         return """
@@ -76,9 +94,17 @@ public class OrderService
             """;
     }
 
-    //public string OrderMenu()
-    //{
-    //    string str = String.Empty;
-
-    //}
+    public string OrderMenu()
+    {
+        string ret = String.Empty;
+        var products = (from p in _context.Products
+                        select p).ToList();
+        ret += "Select a product by number:\n";
+        foreach (Product p in products)
+        {
+            ret += $"({p.Id}): {p.Name} - {p.Price}\n";
+        }
+        ret += "(Q)uit\n";
+        return ret;
+    }
 }
