@@ -15,6 +15,7 @@ public class Customer
     public string LastName { get; set; }
     public string Address { get; set; }
     public string Phone { get; set; }
+    public bool Admin { get; set; }
 
     // navigation property
     public List<Order> Orders { get; set; }
@@ -26,6 +27,7 @@ public class Customer
             Last Name:      {LastName}
             Address:        {Address}
             Phone:          {Phone}
+            Admin:          {(Admin ? "Yes" : "No")}
         """;
 
     }

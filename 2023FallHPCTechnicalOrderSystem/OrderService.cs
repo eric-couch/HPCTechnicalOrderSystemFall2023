@@ -67,6 +67,12 @@ public class OrderService
         return str;
     }   
 
+    public void AddProduct(Product product)
+    {
+        _context.Products.Add(product);
+        _context.SaveChanges();
+    }
+
     public Product? GetProduct(int id)
     {
         Product product = ( from p in _context.Products
@@ -85,13 +91,19 @@ public class OrderService
         _context.OrderDetails.Add(orderDetail);
         _context.SaveChanges();
     }
-    public static string MainMenu()
+    public string MainMenu(Customer c)
     {
-        return """
+        String ret = """
             (L)ist Order History
             (P)lace Order
-            (Q)uit
+
             """;
+        if (c.Admin)
+        {
+            ret += "(A)dd Product\n";
+        }
+        ret += "(Q)uit\n";
+        return ret;
     }
 
     public string OrderMenu()

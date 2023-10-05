@@ -31,7 +31,7 @@ if (findCustomer is null)
 bool quitOrder = false;
 do
 {
-    Console.WriteLine(OrderService.MainMenu());
+    Console.WriteLine(ThisOrderService.MainMenu(ThisCustomer));
     string userResponse = Console.ReadLine() ?? "";
     if (userResponse.ToLower() == "l")
     {
@@ -78,6 +78,25 @@ do
                 Console.WriteLine("Invalid Input.");
             }
         } while (!doneWithProducts);
+    } else if (userResponse.ToLower() == "a" && ThisCustomer.Admin)
+    {
+        
+        Console.Write("Enter new product name:");
+        string productName = Console.ReadLine() ?? "";
+        Console.Write("Enter product price:");
+        if (Decimal.TryParse(Console.ReadLine(), out decimal price))
+        {
+            Product newProduct = new Product()
+            {
+                Name = productName,
+                Price = price
+            };
+            ThisOrderService.AddProduct(newProduct);
+        } else
+        {
+            Console.WriteLine("invalid price");
+            quitOrder = true;
+        }
     }
     else if (userResponse.ToLower() == "q")
     {
